@@ -1,11 +1,12 @@
 # Variables
 CC = gcc
-CFLAGS = -Wall -shared -O3 -lm -fopenmp
-TARGET = openmp_matrix_lib.dll
-IMPLIB = openmp_matrix_lib.a
-SRC = src/strassen_utils.c src/openmp_matrix_lib.c
-OBJ = strassen_utils.o openmp_matrix_lib.o
-HEADERS = include/strassen_utils.h include/openmp_matrix_lib.h
+# CFLAGS = -Wall -shared -O3 -lm -fopenmp
+CFLAGS = -Wall -shared -O1 -lm -fopenmp
+TARGET = openmp_matrix_delphi.dll
+IMPLIB = openmp_matrix_delphi.a
+SRC = src/strassen_utils.c src/openmp_matrix_delphi.c
+OBJ = strassen_utils.o openmp_matrix_delphi.o
+HEADERS = include/strassen_utils.h include/openmp_matrix_delphi.h
 
 # Rules
 all: $(TARGET)

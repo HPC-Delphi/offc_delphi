@@ -1,6 +1,6 @@
-# openmp_matrix_lib - C Library for Matrix Operations Using OpenMP
+# openmp_matrix_delphi - C Library for Matrix Operations Using OpenMP
 
-`openmp_matrix_lib` is a dynamic library written in C that provides parallelized matrix operations, leveraging OpenMP to perform calculations efficiently on multi-core systems. The library is designed primarily for use in Delphi projects, enabling the integration of matrix multiplication and other mathematical functions with high performance.
+`openmp_matrix_delphi` is a dynamic library written in C that provides parallelized matrix operations, leveraging OpenMP to perform calculations efficiently on multi-core systems. The library is designed primarily for use in Delphi projects, enabling the integration of matrix multiplication and other mathematical functions with high performance.
 
 ## Features
 
@@ -13,14 +13,14 @@
 The project is organized as follows:
 
 ```
-openmp_matrix_lib/
+openmp_matrix_delphi/
 │
 ├── src/                     # C source code for the library
-│   ├── openmp_matrix_lib.c  # Implementation of the library functions
+│   ├── openmp_matrix_delphi.c  # Implementation of the library functions
 │   └── utils.c              # Auxiliary functions, if needed
 │
 ├── include/                 # Header files for the C interface
-│   └── openmp_matrix_lib.h  # Declares the exported functions
+│   └── openmp_matrix_delphi.h  # Declares the exported functions
 │
 ├── wrappers/                # Wrappers for different languages
 │   └── delphi/              # Delphi wrapper
@@ -32,9 +32,9 @@ openmp_matrix_lib/
 
 ### Folder Description
 
-- **`src/`**: Contains the C source code of the library. The file `openmp_matrix_lib.c` implements the mathematical functions and parallel optimizations using OpenMP. If needed, you can add auxiliary functions in `utils.c`.
+- **`src/`**: Contains the C source code of the library. The file `openmp_matrix_delphi.c` implements the mathematical functions and parallel optimizations using OpenMP. If needed, you can add auxiliary functions in `utils.c`.
   
-- **`include/`**: Contains the header file `openmp_matrix_lib.h`, which declares the functions exported from the DLL for use in Delphi or any other language that may need to access the library.
+- **`include/`**: Contains the header file `openmp_matrix_delphi.h`, which declares the functions exported from the DLL for use in Delphi or any other language that may need to access the library.
 
 - **`wrappers/`**: This folder contains the wrappers for other programming languages. Currently, it includes only the Delphi wrapper, which facilitates the integration of the DLL with a Delphi project using external declarations.
 
@@ -42,8 +42,9 @@ openmp_matrix_lib/
 
 ## Requirements
 
+- **MinGW-w64 Toolchain** for Windows 64-bit compilation. For a quick guide on setting up MinGW-w64 (with a full tutorial on configuring gcc in VS Code), refer to this link: [https://code.visualstudio.com/docs/cpp/config-mingw](https://code.visualstudio.com/docs/cpp/config-mingw).
 - **GCC** with **OpenMP** support.
-- A development environment compatible with **Delphi** to integrate the DLL.
+- A development environment compatible with **Delphi** to integrate the DLL by using the wrapper.
 
 ## Usage Instructions
 
@@ -55,13 +56,13 @@ To compile the library as a DLL, run the following command in the project's root
 make
 ```
 
-This command will generate the DLL (`openmp_matrix_lib.dll`), which you can use in your Delphi project.
+This command will generate the DLL (`openmp_matrix_delphi.dll`), which you can use in your Delphi project.
 
 ### 2. Using in Delphi
 
 To use the library in Delphi, follow these steps:
 
-1. Place the DLL `openmp_matrix_lib.dll` in the same directory as your Delphi project or in an accessible path.
+1. Place the DLL `openmp_matrix_delphi.dll` in the same directory as your Delphi project or in an accessible path.
 2. Declare the DLL functions in your Delphi code using the `external` keyword. For example:
 
 ```delphi
@@ -75,7 +76,7 @@ uses
 type
   TOpenMPMatrixLib = class
   public
-    class procedure MatrixMultiply(A, B, C: PDouble; N: Integer; Threads: Integer); external 'openmp_matrix_lib.dll' name 'matrix_multiply';
+    class procedure MatrixMultiply(A, B, C: PDouble; N: Integer; Threads: Integer); external 'openmp_matrix_delphi.dll' name 'matrix_multiply';
   end;
 
 implementation
@@ -129,4 +130,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 
 ---
 
-Thank you for using **openmp_matrix_lib**! If you have any questions or suggestions, please feel free to open an issue in the repository.
+Thank you for using **openmp_matrix_delphi**! If you have any questions or suggestions, please feel free to open an issue in the repository.

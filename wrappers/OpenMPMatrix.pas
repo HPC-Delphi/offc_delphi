@@ -6,37 +6,7 @@ uses
   System.SysUtils;
 
 /// <summary>
-/// Performs sequential matrix multiplication.
-/// </summary>
-/// <remarks>
-/// This function multiplies two square matrices of size N x N sequentially,
-/// storing the result in the matrix C. No parallelism is used.
-/// </remarks>
-/// <param name="A">
-/// Pointer to the first matrix (input matrix).
-/// </param>
-/// <param name="B">
-/// Pointer to the second matrix (input matrix).
-/// </param>
-/// <param name="C">
-/// Pointer to the result matrix (output matrix).
-/// </param>
-/// <param name="N">
-/// The dimension of the matrices (N x N).
-/// </param>
-/// <example>
-/// <code>
-/// var
-///   A, B, C: array of Double;
-/// begin
-///   mm_seq(@A[0], @B[0], @C[0], N);
-/// end;
-/// </code>
-/// </example>
-procedure mm_seq(A, B, C: PDouble; N: Integer); cdecl; external 'openmp_matrix_lib.dll';
-
-/// <summary>
-/// Performs parallel matrix multiplication using OpenMP.
+/// Performs parallel matrix multiplication using the Gustavson algorithm with OpenMP.
 /// </summary>
 /// <remarks>
 /// This function multiplies two square matrices of size N x N in parallel using OpenMP,
@@ -65,11 +35,11 @@ procedure mm_seq(A, B, C: PDouble; N: Integer); cdecl; external 'openmp_matrix_l
 ///   T: Integer;
 /// begin
 ///   T := 4; // Use 4 threads
-///   mm_par(@A[0], @B[0], @C[0], N, T);
+///   MulMatNaive(@A[0], @B[0], @C[0], N, T);
 /// end;
 /// </code>
 /// </example>
-procedure mm_par(A, B, C: PDouble; N, T: Integer); cdecl; external 'openmp_matrix_lib.dll';
+procedure MulMatGustavson(A, B, C: PDouble; N, T: Integer); cdecl; external 'openmp_matrix_delphi.dll' name 'mm_gustavson';
 
 /// <summary>
 /// Performs matrix multiplication using the Strassen algorithm with OpenMP.
@@ -100,11 +70,11 @@ procedure mm_par(A, B, C: PDouble; N, T: Integer); cdecl; external 'openmp_matri
 ///   T: Integer;
 /// begin
 ///   T := 8; // Use 8 threads
-///   mm_strassen(@A[0], @B[0], @C[0], N, T);
+///   MulMatStrassen(@A[0], @B[0], @C[0], N, T);
 /// end;
 /// </code>
 /// </example>
-procedure mm_strassen(A, B, C: PDouble; N, T: Integer); cdecl; external 'openmp_matrix_lib.dll';
+procedure MulMatStrassen(A, B, C: PDouble; N, T: Integer); cdecl; external 'openmp_matrix_delphi.dll' name 'mm_strassen';
 
 implementation
 

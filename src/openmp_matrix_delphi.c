@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include "../include/openmp_matrix_lib.h"
+#include "../include/openmp_matrix_delphi.h"
 #include "../include/strassen_utils.h"
 
 //----------------------
@@ -18,7 +18,7 @@
 //----------------------
 
 /**
- * Parallel matrix multiplication using OpenMP.
+ * Matrix multiplication using the Gustavson algorithm with OpenMP.
  *
  * Multiplies two matrices a and b in parallel using OpenMP, storing the result in matrix c.
  *
@@ -28,7 +28,7 @@
  * @param n Size of the matrices (n x n).
  * @param t Number of threads to use.
  */
-OPENMP_MATRIX_LIB_API void mm_naive(double *a, double *b, double *c, int n, int t)
+OPENMP_MATRIX_LIB_API void mm_gustavson(double *a, double *b, double *c, int n, int t)
 {
   int i, j, k;
   double aik;
