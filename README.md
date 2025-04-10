@@ -1,12 +1,22 @@
-# openmp_matrix_delphi - C Library for Matrix Operations Using OpenMP
+# openmp_matrix_delphi - High-Performance Matrix Operations Library
 
-`openmp_matrix_delphi` is a dynamic library written in C that provides parallelized matrix operations, leveraging OpenMP to perform calculations efficiently on multi-core systems. The library is designed primarily for use in Delphi projects, enabling the integration of matrix multiplication and other mathematical functions with high performance.
+`openmp_matrix_delphi` is a dynamic library written in C that provides efficient matrix operations, leveraging OpenMP for parallelization. Designed for integration with Delphi applications, this library enables high-performance matrix computations, including sequential and parallel implementations of Gustavson and Strassen algorithms.
 
 ## Features
 
-- **Parallelized Matrix Multiplication**: The library includes optimized functions for matrix multiplication using OpenMP, allowing you to take advantage of modern multi-core processing capabilities.
-- **Easy Integration in Delphi**: A **wrapper** is provided for seamless integration into Delphi applications, using the functions exposed by the DLL.
-- **Optimized Performance**: Thanks to OpenMP, matrix operations are accelerated, enabling efficient handling of large datasets.
+- **Parallelized Matrix Multiplication**: Optimized implementations of matrix multiplication using OpenMP, enabling efficient utilization of multi-core processors.
+- **Delphi Integration**: A Delphi wrapper is provided to seamlessly integrate the library into Delphi projects.
+- **Support for Advanced Algorithms**: Includes both Gustavson and Strassen algorithms for matrix multiplication, with sequential and parallel variants.
+- **Cross-Language Compatibility**: The library is implemented as a DLL, making it accessible from various programming environments.
+
+## Development and Compilation Environment
+
+The library has been developed and tested in the following environment:
+
+- **Operating System**: Windows 10
+- **Toolchain**: UCRT64, available in the MSYS2 collection of tools and libraries
+- **Compiler**: GCC (UCRT version), a modern implementation of the C standard library for Windows, offering better compatibility and performance compared to MSVCRT
+- **Delphi Wrapper Development**: RAD Studio (Delphi 12.1 Community Edition), an integrated development environment (IDE) providing tools for designing, compiling, and debugging Delphi applications
 
 ## Project Structure
 
@@ -16,118 +26,108 @@ The project is organized as follows:
 openmp_matrix_delphi/
 │
 ├── src/                     # C source code for the library
-│   ├── openmp_matrix_delphi.c  # Implementation of the library functions
-│   └── utils.c              # Auxiliary functions, if needed
+│   ├── openmp_matrix_delphi.c  # Core library implementation
+│   └── strassen_utils.c     # Utility functions for Strassen's algorithm
 │
-├── include/                 # Header files for the C interface
-│   └── openmp_matrix_delphi.h  # Declares the exported functions
+├── include/                 # Header files for the library
+│   ├── openmp_matrix_delphi.h  # Public API declarations
+│   └── strassen_utils.h     # Utility function declarations
 │
-├── wrappers/                # Wrappers for different languages
-│   └── delphi/              # Delphi wrapper
+├── wrappers/                # Wrappers for other languages
+│   └── OpenMPMatrix.pas     # Delphi wrapper
 │
-├── LICENSE                  # The MIT License for this project
-├── Makefile                 # Build script for the DLL
+├── LICENSE                  # License information (MIT)
+├── Makefile                 # Build script for the library
 └── README.md                # Project documentation
 ```
 
 ### Folder Description
 
-- **`src/`**: Contains the C source code of the library. The file `openmp_matrix_delphi.c` implements the mathematical functions and parallel optimizations using OpenMP. If needed, you can add auxiliary functions in `utils.c`.
-  
-- **`include/`**: Contains the header file `openmp_matrix_delphi.h`, which declares the functions exported from the DLL for use in Delphi or any other language that may need to access the library.
-
-- **`wrappers/`**: This folder contains the wrappers for other programming languages. Currently, it includes only the Delphi wrapper, which facilitates the integration of the DLL with a Delphi project using external declarations.
-
-- **`Makefile`**: The `Makefile` is used to compile the library as a DLL using `gcc`. Make sure your environment is configured with GCC and supports OpenMP.
+- **`src/`**: Contains the C source code for the library, including the main implementation and utility functions.
+- **`include/`**: Header files defining the public API and utility functions.
+- **`wrappers/`**: Contains the Delphi wrapper (`OpenMPMatrix.pas`) for integrating the library into Delphi projects.
+- **`Makefile`**: A build script for compiling the library as a DLL using GCC with OpenMP support.
 
 ## Requirements
 
-- **MinGW-w64 Toolchain** for Windows 64-bit compilation. For a quick guide on setting up MinGW-w64 (with a full tutorial on configuring gcc in VS Code), refer to this link: [https://code.visualstudio.com/docs/cpp/config-mingw](https://code.visualstudio.com/docs/cpp/config-mingw).
-- **GCC** with **OpenMP** support.
-- A development environment compatible with **Delphi** to integrate the DLL by using the wrapper.
+- **MSYS2**: Install the UCRT64 environment from the MSYS2 toolchain to compile the library.
+- **GCC with OpenMP Support**: Ensure that the GCC compiler supports OpenMP for parallelization.
+- **RAD Studio (Delphi 12.1 Community Edition)**: Required for developing and testing the Delphi wrapper.
 
-## Usage Instructions
+## Compilation Instructions
 
-### 1. Compiling the DLL
+To compile the library as a DLL, follow these steps:
 
-To compile the library as a DLL, run the following command in the project's root directory:
+1. Open the MSYS2 terminal and switch to the UCRT64 environment.
+2. Navigate to the project root directory.
+3. Run the following command:
 
 ```bash
 make
 ```
 
-This command will generate the DLL (`openmp_matrix_delphi.dll`), which you can use in your Delphi project.
+This will generate the `openmp_matrix_delphi.dll` file, along with the corresponding import library (`openmp_matrix_delphi.a`).
 
-### 2. Using in Delphi
+## Using the Library in Delphi
 
-To use the library in Delphi, follow these steps:
+### 1. Setup
 
-1. Place the DLL `openmp_matrix_delphi.dll` in the same directory as your Delphi project or in an accessible path.
-2. Declare the DLL functions in your Delphi code using the `external` keyword. For example:
+- Place the compiled `openmp_matrix_delphi.dll` in the same directory as your Delphi project or in a directory included in the system's PATH.
 
-```delphi
-unit MatrixLib;
+### 2. Using the Wrapper in a Delphi Project
 
-interface
+The Delphi wrapper (`OpenMPMatrix.pas`) is provided to simplify the integration of the library into your Delphi project. Follow these steps to use it:
 
-uses
-  System.SysUtils, System.Classes;
+1. **Add the Wrapper to Your Project**  
+   Copy the `OpenMPMatrix.pas` file into your Delphi project directory and include it in your project. You can do this by adding the file to your Delphi project in the IDE.
 
-type
-  TOpenMPMatrixLib = class
-  public
-    class procedure MatrixMultiply(A, B, C: PDouble; N: Integer; Threads: Integer); external 'openmp_matrix_delphi.dll' name 'matrix_multiply';
-  end;
+2. **Adapt the DLL Path**  
+   Open the `OpenMPMatrix.pas` file and ensure the `DLLPATH` constant points to the correct location of the `openmp_matrix_delphi.dll` file. For example:
+   ```delphi
+   const
+     DLLPATH = 'path_to_your_dll\openmp_matrix_delphi.dll';
+   ```
 
-implementation
+3. **Call the Functions**  
+   Use the functions declared in the wrapper to perform matrix operations. Here's an example:
 
-end.
-```
+   ```delphi
+   procedure TForm1.Button1Click(Sender: TObject);
+   var
+     A, B, C: array of Double;
+     M, K, N, Threads: Integer;
+   begin
+     M := 4; K := 4; N := 4; // Matrix dimensions
+     Threads := 4; // Number of threads for parallel execution
 
-3. Call the `MatrixMultiply` function from anywhere in your Delphi application.
+     SetLength(A, M * K);
+     SetLength(B, K * N);
+     SetLength(C, M * N);
 
-### 3. Example of Usage in Delphi
+     // Initialize matrices A and B with values
+     A[0] := 1; A[1] := 2; A[2] := 3; A[3] := 4;
+     B[0] := 5; B[1] := 6; B[2] := 7; B[3] := 8;
 
-Here is an example of how you could use the `MatrixMultiply` function in Delphi:
+     // Call the parallel Gustavson multiplication function
+     MMParGustavson(@A[0], @B[0], @C[0], M, K, N, Threads);
 
-```delphi
-procedure TForm1.Button1Click(Sender: TObject);
-var
-  A, B, C: array of Double;
-  N, Threads: Integer;
-begin
-  N := 3;  // Matrix size
-  Threads := 4;  // Number of OpenMP threads
-  
-  SetLength(A, N * N);
-  SetLength(B, N * N);
-  SetLength(C, N * N);
-  
-  // Fill matrices A and B with data
-  
-  // Call the matrix multiplication function
-  TOpenMPMatrixLib.MatrixMultiply(@A[0], @B[0], @C[0], N, Threads);
-  
-  // Use the resulting matrix C in your application
-end;
-```
+     // Use the result matrix C
+     ShowMessage(Format('C[0]: %f', [C[0]]));
+   end;
+   ```
 
-This example multiplies two matrices, `A` and `B`, and stores the result in matrix `C`. The `Threads` parameter controls the number of OpenMP threads used to parallelize the operation.
+This example demonstrates how to initialize matrices, call the parallel Gustavson multiplication function, and display the result. Ensure that the `DLLPATH` in the wrapper is correctly set to avoid runtime errors.
 
 ## Contributing
 
-If you wish to contribute to this project, please follow these steps:
+Contributions are welcome! To contribute:
 
 1. Fork the repository.
-2. Create a new branch for your changes (`git checkout -b feature/new-functionality`).
-3. Make your changes and commit them (`git commit -am 'Add new functionality'`).
-4. Push to the branch (`git push origin feature/new-functionality`).
-5. Open a pull request describing the changes made.
+2. Create a new branch (`git checkout -b feature/new-feature`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Open a pull request.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
-
----
-
-Thank you for using **openmp_matrix_delphi**! If you have any questions or suggestions, please feel free to open an issue in the repository.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
