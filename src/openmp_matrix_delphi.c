@@ -89,13 +89,11 @@ OPENMP_MATRIX_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, 
  */
 OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, int m, int k, int n)
 {
-  /*
   if (m <= THRESHOLD || k <= THRESHOLD || n <= THRESHOLD) // Base case
   {
-      mm_seq(a, b, c, m, k, n);
-      return;
+    mm_seq(a, b, c, m, k, n);
+    return;
   }
-  */
 
   // Dividir las matrices A y B en submatrices
   int m2 = m / 2; // Mitad de las filas de A
@@ -160,48 +158,41 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, i
   double *B11_plus_B22 = (double *)malloc(k2 * n2 * sizeof(double));
   addMatrices(A11, A22, A11_plus_A22, m2, k2);
   addMatrices(B11, B22, B11_plus_B22, k2, n2);
-  // strassen_seq(A11_plus_A22, B11_plus_B22, M1, m2, k2, n2);
-  mm_seq(A11_plus_A22, B11_plus_B22, M1, m2, k2, n2);
+  mm_seq_strassen(A11_plus_A22, B11_plus_B22, M1, m2, k2, n2);
 
   // M2 = (A21 + A22) * B11
   double *A21_plus_A22 = (double *)malloc((m - m2) * k2 * sizeof(double));
   addMatrices(A21, A22, A21_plus_A22, m - m2, k2);
-  // strassen_seq(A21_plus_A22, B11, M2, m - m2, k2, n2);
-  mm_seq(A21_plus_A22, B11, M2, m - m2, k2, n2);
+  mm_seq_strassen(A21_plus_A22, B11, M2, m - m2, k2, n2);
 
   // M3 = A11 * (B12 - B22)
   double *B12_minus_B22 = (double *)malloc(k2 * (n - n2) * sizeof(double));
   subtractMatrices(B12, B22, B12_minus_B22, k2, n - n2);
-  // strassen_seq(A11, B12_minus_B22, M3, m2, k2, n - n2);
-  mm_seq(A11, B12_minus_B22, M3, m2, k2, n - n2);
+  mm_seq_strassen(A11, B12_minus_B22, M3, m2, k2, n - n2);
 
   // M4 = A22 * (B21 - B11)
   double *B21_minus_B11 = (double *)malloc((k - k2) * n2 * sizeof(double));
   subtractMatrices(B21, B11, B21_minus_B11, k - k2, n2);
-  // strassen_seq(A22, B21_minus_B11, M4, m - m2, k - k2, n2);
-  mm_seq(A22, B21_minus_B11, M4, m - m2, k - k2, n2);
+  mm_seq_strassen(A22, B21_minus_B11, M4, m - m2, k - k2, n2);
 
   // M5 = (A11 + A12) * B22
   double *A11_plus_A12 = (double *)malloc(m2 * (k - k2) * sizeof(double));
   addMatrices(A11, A12, A11_plus_A12, m2, k - k2);
-  // strassen_seq(A11_plus_A12, B22, M5, m2, k - k2, n - n2);
-  mm_seq(A11_plus_A12, B22, M5, m2, k - k2, n - n2);
+  mm_seq_strassen(A11_plus_A12, B22, M5, m2, k - k2, n - n2);
 
   // M6 = (A21 - A11) * (B11 + B12)
   double *A21_minus_A11 = (double *)malloc((m - m2) * k2 * sizeof(double));
   subtractMatrices(A21, A11, A21_minus_A11, m - m2, k2);
   double *B11_plus_B12 = (double *)malloc(k2 * (n - n2) * sizeof(double));
   addMatrices(B11, B12, B11_plus_B12, k2, n - n2);
-  // strassen_seq(A21_minus_A11, B11_plus_B12, M6, m - m2, k2, n - n2);
-  mm_seq(A21_minus_A11, B11_plus_B12, M6, m - m2, k2, n - n2);
+  mm_seq_strassen(A21_minus_A11, B11_plus_B12, M6, m - m2, k2, n - n2);
 
   // M7 = (A12 - A22) * (B21 + B22)
   double *A12_minus_A22 = (double *)malloc(m2 * (k - k2) * sizeof(double));
   subtractMatrices(A12, A22, A12_minus_A22, m2, k - k2);
   double *B21_plus_B22 = (double *)malloc((k - k2) * n2 * sizeof(double));
   addMatrices(B21, B22, B21_plus_B22, k - k2, n2);
-  // strassen_seq(A12_minus_A22, B21_plus_B22, M7, m2, k - k2, n2);
-  mm_seq(A12_minus_A22, B21_plus_B22, M7, m2, k - k2, n2);
+  mm_seq_strassen(A12_minus_A22, B21_plus_B22, M7, m2, k - k2, n2);
 
   // Combinar los Cados de M1 a M7 para formar la matriz final C
   // C11 = M1 + M4 - M5 + M7
@@ -272,9 +263,199 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, i
  * @param a Pointer to the first matrix.
  * @param b Pointer to the second matrix.
  * @param c Pointer to the result matrix.
- * @param n Size of the matrices (n x n).
+ * @param m Number of rows in matrix a.
+ * @param k Number of columns in matrix a and rows in matrix b.
+ * @param n Number of columns in matrix b.
  * @param t Number of threads to use.
  */
 OPENMP_MATRIX_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, int m, int k, int n, int t)
 {
+  if (m <= THRESHOLD || k <= THRESHOLD || n <= THRESHOLD) // Base case
+  {
+    mm_seq(a, b, c, m, k, n);
+    return;
+  }
+
+  // Divide matrices
+  int m2 = m / 2;
+  int k2 = k / 2;
+  int n2 = n / 2;
+
+  double *A11 = (double *)malloc(m2 * k2 * sizeof(double));
+  double *A12 = (double *)malloc(m2 * (k - k2) * sizeof(double));
+  double *A21 = (double *)malloc((m - m2) * k2 * sizeof(double));
+  double *A22 = (double *)malloc((m - m2) * (k - k2) * sizeof(double));
+  double *B11 = (double *)malloc(k2 * n2 * sizeof(double));
+  double *B12 = (double *)malloc(k2 * (n - n2) * sizeof(double));
+  double *B21 = (double *)malloc((k - k2) * n2 * sizeof(double));
+  double *B22 = (double *)malloc((k - k2) * (n - n2) * sizeof(double));
+
+  // Fill submatrices
+  for (int i = 0; i < m2; i++)
+    for (int j = 0; j < k2; j++)
+      A11[i * k2 + j] = a[i * k + j];
+
+  for (int i = 0; i < m2; i++)
+    for (int j = 0; j < k - k2; j++)
+      A12[i * (k - k2) + j] = a[i * k + k2 + j];
+
+  for (int i = 0; i < m - m2; i++)
+    for (int j = 0; j < k2; j++)
+      A21[i * k2 + j] = a[(m2 + i) * k + j];
+
+  for (int i = 0; i < m - m2; i++)
+    for (int j = 0; j < k - k2; j++)
+      A22[i * (k - k2) + j] = a[(m2 + i) * k + k2 + j];
+
+  for (int i = 0; i < k2; i++)
+    for (int j = 0; j < n2; j++)
+      B11[i * n2 + j] = b[i * n + j];
+
+  for (int i = 0; i < k2; i++)
+    for (int j = 0; j < n - n2; j++)
+      B12[i * (n - n2) + j] = b[i * n + n2 + j];
+
+  for (int i = 0; i < k - k2; i++)
+    for (int j = 0; j < n2; j++)
+      B21[i * n2 + j] = b[(k2 + i) * n + j];
+
+  for (int i = 0; i < k - k2; i++)
+    for (int j = 0; j < n - n2; j++)
+      B22[i * (n - n2) + j] = b[(k2 + i) * n + n2 + j];
+
+  // Allocate memory for intermediate matrices
+  double *M1 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M2 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M3 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M4 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M5 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M6 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M7 = (double *)malloc(m2 * n2 * sizeof(double));
+
+#pragma omp parallel num_threads(t)
+  {
+#pragma omp sections
+    {
+#pragma omp section
+      {
+        double *A11_plus_A22 = (double *)malloc(m2 * k2 * sizeof(double));
+        double *B11_plus_B22 = (double *)malloc(k2 * n2 * sizeof(double));
+        addMatrices(A11, A22, A11_plus_A22, m2, k2);
+        addMatrices(B11, B22, B11_plus_B22, k2, n2);
+        mm_par_strassen(A11_plus_A22, B11_plus_B22, M1, m2, k2, n2, t);
+        free(A11_plus_A22);
+        free(B11_plus_B22);
+      }
+
+#pragma omp section
+      {
+        double *A21_plus_A22 = (double *)malloc((m - m2) * k2 * sizeof(double));
+        addMatrices(A21, A22, A21_plus_A22, m - m2, k2);
+        mm_par_strassen(A21_plus_A22, B11, M2, m - m2, k2, n2, t);
+        free(A21_plus_A22);
+      }
+
+#pragma omp section
+      {
+        double *B12_minus_B22 = (double *)malloc(k2 * (n - n2) * sizeof(double));
+        subtractMatrices(B12, B22, B12_minus_B22, k2, n - n2);
+        mm_par_strassen(A11, B12_minus_B22, M3, m2, k2, n - n2, t);
+        free(B12_minus_B22);
+      }
+
+#pragma omp section
+      {
+        double *B21_minus_B11 = (double *)malloc((k - k2) * n2 * sizeof(double));
+        subtractMatrices(B21, B11, B21_minus_B11, k - k2, n2);
+        mm_par_strassen(A22, B21_minus_B11, M4, m - m2, k - k2, n2, t);
+        free(B21_minus_B11);
+      }
+
+#pragma omp section
+      {
+        double *A11_plus_A12 = (double *)malloc(m2 * (k - k2) * sizeof(double));
+        addMatrices(A11, A12, A11_plus_A12, m2, k - k2);
+        mm_par_strassen(A11_plus_A12, B22, M5, m2, k - k2, n - n2, t);
+        free(A11_plus_A12);
+      }
+
+#pragma omp section
+      {
+        double *A21_minus_A11 = (double *)malloc((m - m2) * k2 * sizeof(double));
+        double *B11_plus_B12 = (double *)malloc(k2 * (n - n2) * sizeof(double));
+        subtractMatrices(A21, A11, A21_minus_A11, m - m2, k2);
+        addMatrices(B11, B12, B11_plus_B12, k2, n - n2);
+        mm_par_strassen(A21_minus_A11, B11_plus_B12, M6, m - m2, k2, n - n2, t);
+        free(A21_minus_A11);
+        free(B11_plus_B12);
+      }
+
+#pragma omp section
+      {
+        double *A12_minus_A22 = (double *)malloc(m2 * (k - k2) * sizeof(double));
+        double *B21_plus_B22 = (double *)malloc((k - k2) * n2 * sizeof(double));
+        subtractMatrices(A12, A22, A12_minus_A22, m2, k - k2);
+        addMatrices(B21, B22, B21_plus_B22, k - k2, n2);
+        mm_par_strassen(A12_minus_A22, B21_plus_B22, M7, m2, k - k2, n2, t);
+        free(A12_minus_A22);
+        free(B21_plus_B22);
+      }
+    }
+  }
+
+  // Combine results into C
+  double *C11 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *C12 = (double *)malloc(m2 * (n - n2) * sizeof(double));
+  double *C21 = (double *)malloc((m - m2) * n2 * sizeof(double));
+  double *C22 = (double *)malloc((m - m2) * (n - n2) * sizeof(double));
+
+  addMatrices(M1, M4, C11, m2, n2);
+  subtractMatrices(C11, M5, C11, m2, n2);
+  addMatrices(C11, M7, C11, m2, n2);
+
+  addMatrices(M3, M5, C12, m2, n - n2);
+
+  addMatrices(M2, M4, C21, m - m2, n2);
+
+  addMatrices(M1, M6, C22, m - m2, n - n2);
+  subtractMatrices(C22, M2, C22, m - m2, n - n2);
+  addMatrices(C22, M3, C22, m - m2, n - n2);
+
+  // Combine submatrices into final result
+  for (int i = 0; i < m2; i++)
+    for (int j = 0; j < n2; j++)
+      c[i * n + j] = C11[i * n2 + j];
+
+  for (int i = 0; i < m2; i++)
+    for (int j = 0; j < n - n2; j++)
+      c[i * n + n2 + j] = C12[i * (n - n2) + j];
+
+  for (int i = 0; i < m - m2; i++)
+    for (int j = 0; j < n2; j++)
+      c[(m2 + i) * n + j] = C21[i * n2 + j];
+
+  for (int i = 0; i < m - m2; i++)
+    for (int j = 0; j < n - n2; j++)
+      c[(m2 + i) * n + n2 + j] = C22[i * (n - n2) + j];
+
+  // Free allocated memory
+  free(A11);
+  free(A12);
+  free(A21);
+  free(A22);
+  free(B11);
+  free(B12);
+  free(B21);
+  free(B22);
+  free(M1);
+  free(M2);
+  free(M3);
+  free(M4);
+  free(M5);
+  free(M6);
+  free(M7);
+  free(C11);
+  free(C12);
+  free(C21);
+  free(C22);
 }

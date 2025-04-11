@@ -10,8 +10,6 @@
 #include <stdlib.h>
 #include "../include/strassen_utils.h"
 
-#define THRESHOLD 64
-
 void mm_seq(double *A, double *B, double *C, int m, int k, int n)
 {
     for (int i = 0; i < m; i++)

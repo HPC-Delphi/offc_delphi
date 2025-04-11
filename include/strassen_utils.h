@@ -9,6 +9,8 @@
 #ifndef STRASSEN_UTILS_H
 #define STRASSEN_UTILS_H
 
+#define THRESHOLD 64
+
 void mm_seq(double *A, double *B, double *C, int m, int k, int n);
 void addMatrices(double *A, double *B, double *C, int r, int c);
 void subtractMatrices(double *A, double *B, double *C, int r, int c);
