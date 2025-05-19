@@ -30,10 +30,13 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
 # Compile each source into its object
-$(OBJ): $(SRCS) $(HEADERS)
+$(OBJ): $(SRCS) $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $(STRASSEN_SRC) -o $(STRASSEN_OBJ)
 	$(CC) $(CFLAGS) -c $(OMP_SRC)      -o $(OMP_OBJ)
 
-# Clean up generated files
+$(OBJ_DIR):
+	@mkdir $(OBJ_DIR)
+
+# Clean up build artifacts
 clean:
-	del /Q $(OBJ) $(TARGET)
+	rmdir /s /Q $(OBJ_DIR)
