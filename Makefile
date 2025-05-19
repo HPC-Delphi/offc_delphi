@@ -1,20 +1,39 @@
-# Variables
-CC = gcc
-CFLAGS = -Wall -shared -O3 -lm -fopenmp
-TARGET = openmp_matrix_delphi.dll
-IMPLIB = openmp_matrix_delphi.a
-SRC = src/strassen_utils.c src/openmp_matrix_delphi.c
-OBJ = strassen_utils.o openmp_matrix_delphi.o
-HEADERS = include/strassen_utils.h include/openmp_matrix_delphi.h
+# Compiler and flags
+CC        := gcc
+CFLAGS    := -Wall -shared -O3 -lm -fopenmp
 
-# Rules
+# Directories
+SRC_DIR   := src
+OBJ_DIR   := build
+INC_DIR   := include
+
+# Targets and artifacts
+TARGET    := $(OBJ_DIR)\omp_delphi.dll
+
+# Source and object files
+STRASSEN_SRC := $(SRC_DIR)\strassen_utils.c
+OMP_SRC      := $(SRC_DIR)\omp_delphi.c
+SRCS         := $(STRASSEN_SRC) $(OMP_SRC)
+
+STRASSEN_OBJ := $(OBJ_DIR)\strassen_utils.o
+OMP_OBJ      := $(OBJ_DIR)\omp_delphi.o
+OBJ          := $(STRASSEN_OBJ) $(OMP_OBJ)
+
+# Header files
+HEADERS      := $(INC_DIR)\strassen_utils.h $(INC_DIR)\omp_delphi.h
+
+# Default rule
 all: $(TARGET)
 
+# Link shared library
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -Wl,--out-implib,$(IMPLIB)
+	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
-$(OBJ): $(SRC) $(HEADERS)
-	$(CC) $(CFLAGS) -c $(SRC)
+# Compile each source into its object
+$(OBJ): $(SRCS) $(HEADERS)
+	$(CC) $(CFLAGS) -c $(STRASSEN_SRC) -o $(STRASSEN_OBJ)
+	$(CC) $(CFLAGS) -c $(OMP_SRC)      -o $(OMP_OBJ)
 
+# Clean up generated files
 clean:
-	del /Q $(OBJ) $(TARGET) $(IMPLIB)
+	del /Q $(OBJ) $(TARGET)

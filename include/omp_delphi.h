@@ -1,5 +1,5 @@
 /*
- * openmp_matrix_delphi.h
+ * omp_delphi.h
  *
  * Header file for the OpenMP Matrix Delphi library.
  * Provides function declarations for matrix operations.
@@ -9,10 +9,10 @@
 
 #pragma once
 
-#ifndef OPENMP_MATRIX_DELPHI_EXPORTS
-#define OPENMP_MATRIX_DELPHI_API __declspec(dllexport)
+#ifndef OMP_DELPHI_EXPORTS
+#define OMP_DELPHI_API __declspec(dllexport)
 #else
-#define OPENMP_MATRIX_DELPHI_API __declspec(dllimport)
+#define OMP_DELPHI_API __declspec(dllimport)
 #endif
 
 /**
@@ -27,7 +27,7 @@
  * @param k Number of columns in matrix A and rows in matrix B.
  * @param n Number of columns in matrix B and C.
  */
-OPENMP_MATRIX_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, int m, int k, int n);
+OMP_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, int m, int k, int n);
 
 /**
  * Parallel matrix multiplication using the Gustavson algorithm with OpenMP.
@@ -42,7 +42,7 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, 
  * @param n Number of columns in matrix B and C.
  * @param t Number of threads to use.
  */
-OPENMP_MATRIX_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, int m, int n, int k, int t);
+OMP_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, int m, int n, int k, int t);
 
 /**
  * Sequential matrix multiplication using the Strassen algorithm.
@@ -55,7 +55,7 @@ OPENMP_MATRIX_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, 
  * @param c Pointer to the result matrix.
  * @param n Size of the matrices (n x n).
  */
-OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, int m, int k, int n);
+OMP_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, int m, int k, int n);
 
 /**
  * Parallel matrix multiplication using the Strassen algorithm.
@@ -69,4 +69,4 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, i
  * @param n Size of the matrices (n x n).
  * @param t Number of threads to use.
  */
-OPENMP_MATRIX_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, int m, int k, int n, int t);
+OMP_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, int m, int k, int n, int t);

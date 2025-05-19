@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "../include/strassen_utils.h"
 
+/*
 void mm_seq(double *A, double *B, double *C, int m, int k, int n)
 {
     for (int i = 0; i < m; i++)
@@ -19,6 +20,22 @@ void mm_seq(double *A, double *B, double *C, int m, int k, int n)
             C[i * n + j] = 0;
             for (int z = 0; z < k; z++)
                 C[i * n + j] += A[i * k + z] * B[z * n + j];
+        }
+    }
+}
+*/
+
+void mm_seq(double *A, double *B, double *C, int m, int k, int n)
+{
+    double aiz;
+
+    for (int i = 0; i < m; i++)
+    {
+        for (int z = 0; z < k; z++)
+        {
+            aiz = A[i * k + z];
+            for (int j = 0; j < n; j++)
+                C[i * n + j] += aiz * B[z * n + j];
         }
     }
 }

@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include "../include/openmp_matrix_delphi.h"
+#include "../include/omp_delphi.h"
 #include "../include/strassen_utils.h"
 
 //----------------------
@@ -29,7 +29,7 @@
  * @param k Number of columns in matrix A and rows in matrix B.
  * @param n Number of columns in matrix B and C.
  */
-OPENMP_MATRIX_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, int m, int k, int n)
+OMP_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, int m, int k, int n)
 {
   int i, j, p;
   double aip;
@@ -58,7 +58,7 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_gustavson(double *a, double *b, double *c, 
  * @param n Number of columns in matrix B and C.
  * @param t Number of threads to use.
  */
-OPENMP_MATRIX_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, int m, int k, int n, int t)
+OMP_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, int m, int k, int n, int t)
 {
   int i, j, p;
   double aip;
@@ -87,11 +87,12 @@ OPENMP_MATRIX_DELPHI_API void mm_par_gustavson(double *a, double *b, double *c, 
  * @param c Pointer to the result matrix.
  * @param n Size of the matrices (n x n).
  */
-OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, int m, int k, int n)
+OMP_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, int m, int k, int n)
 {
   if (m <= THRESHOLD || k <= THRESHOLD || n <= THRESHOLD) // Base case
   {
-    mm_seq(a, b, c, m, k, n);
+
+    mm_seq_gustavson(a, b, c, m, k, n);
     return;
   }
 
@@ -145,13 +146,13 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, i
       B22[i * (n - n2) + j] = b[(k2 + i) * n + n2 + j];
 
   // Calcular los productos M1 a M7 usando Strassen
-  double *M1 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M2 = (double *)malloc(m2 * (n - n2) * sizeof(double));
-  double *M3 = (double *)malloc((m - m2) * n2 * sizeof(double));
-  double *M4 = (double *)malloc((m - m2) * (n - n2) * sizeof(double));
-  double *M5 = (double *)malloc(m2 * (n - n2) * sizeof(double));
-  double *M6 = (double *)malloc((m - m2) * n2 * sizeof(double));
-  double *M7 = (double *)malloc((m - m2) * (n - n2) * sizeof(double));
+  double *M1 = (double *)calloc(m2 * n2 * sizeof(double), sizeof(double));
+  double *M2 = (double *)calloc(m2 * (n - n2) * sizeof(double), sizeof(double));
+  double *M3 = (double *)calloc((m - m2) * n2 * sizeof(double), sizeof(double));
+  double *M4 = (double *)calloc((m - m2) * (n - n2) * sizeof(double), sizeof(double));
+  double *M5 = (double *)calloc(m2 * (n - n2) * sizeof(double), sizeof(double));
+  double *M6 = (double *)calloc((m - m2) * n2 * sizeof(double), sizeof(double));
+  double *M7 = (double *)calloc((m - m2) * (n - n2) * sizeof(double), sizeof(double));
 
   // M1 = (A11 + A22) * (B11 + B22)
   double *A11_plus_A22 = (double *)malloc(m2 * k2 * sizeof(double));
@@ -268,11 +269,11 @@ OPENMP_MATRIX_DELPHI_API void mm_seq_strassen(double *a, double *b, double *c, i
  * @param n Number of columns in matrix b.
  * @param t Number of threads to use.
  */
-OPENMP_MATRIX_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, int m, int k, int n, int t)
+OMP_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, int m, int k, int n, int t)
 {
   if (m <= THRESHOLD || k <= THRESHOLD || n <= THRESHOLD) // Base case
   {
-    mm_seq(a, b, c, m, k, n);
+    mm_seq_gustavson(a, b, c, m, k, n);
     return;
   }
 
@@ -324,13 +325,13 @@ OPENMP_MATRIX_DELPHI_API void mm_par_strassen(double *a, double *b, double *c, i
       B22[i * (n - n2) + j] = b[(k2 + i) * n + n2 + j];
 
   // Allocate memory for intermediate matrices
-  double *M1 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M2 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M3 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M4 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M5 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M6 = (double *)malloc(m2 * n2 * sizeof(double));
-  double *M7 = (double *)malloc(m2 * n2 * sizeof(double));
+  double *M1 = (double *)calloc(m2 * n2 * sizeof(double), sizeof(double));
+  double *M2 = (double *)calloc(m2 * (n - n2) * sizeof(double), sizeof(double));
+  double *M3 = (double *)calloc((m - m2) * n2 * sizeof(double), sizeof(double));
+  double *M4 = (double *)calloc((m - m2) * (n - n2) * sizeof(double), sizeof(double));
+  double *M5 = (double *)calloc(m2 * (n - n2) * sizeof(double), sizeof(double));
+  double *M6 = (double *)calloc((m - m2) * n2 * sizeof(double), sizeof(double));
+  double *M7 = (double *)calloc((m - m2) * (n - n2) * sizeof(double), sizeof(double));
 
 #pragma omp parallel num_threads(t)
   {
