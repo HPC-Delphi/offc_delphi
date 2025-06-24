@@ -5,10 +5,10 @@ SRC_DIR   := src
 OBJ_DIR   := build
 INC_DIR   := include
 
-TARGET    := $(OBJ_DIR)\bridge_delphi.dll
-SRC   := $(SRC_DIR)\bridge_delphi.c
-OBJ   := $(OBJ_DIR)\bridge_delphi.o
-HEADERS      := $(INC_DIR)\bridge_delphi.h
+TARGET    := $(OBJ_DIR)\offc_delphi.dll
+SRC   := $(SRC_DIR)\offc_delphi.c
+OBJ   := $(OBJ_DIR)\offc_delphi.o
+HEADERS      := $(INC_DIR)\offc_delphi.h
 
 all: $(TARGET)
 

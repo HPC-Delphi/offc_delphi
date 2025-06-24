@@ -1,9 +1,9 @@
-# bridge_delphi - High Performance Matrix Operations Library
+# offc_delphi - High Performance Matrix Operations Library
 
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2011-blue)](https://www.microsoft.com/en-us/windows/windows-11)
 [![GCC](https://img.shields.io/badge/GCC-15.1.0-brightgreen)](https://winlibs.com/)
 
-`bridge_delphi` is a high-performance dynamic library written in C, providing efficient matrix operations. Designed for seamless integration with Delphi applications, it enables advanced matrix computations, including sequential implementations of Gustavson algorithms. The library is distributed as a DLL for easy cross-language usage.
+`offc_delphi` is a high-performance dynamic library written in C, providing efficient matrix operations. Designed for seamless integration with Delphi applications, it enables advanced matrix computations, including sequential implementations of Gustavson algorithms. The library is distributed as a DLL for easy cross-language usage.
 
 ---
 
@@ -32,15 +32,15 @@ The library is developed, tested, and intended to be used in the following envir
 ## Project Structure
 
 ```
-bridge_delphi/
+offc_delphi/
 │
 ├── build/                  # Compiled binaries and intermediate files
 ├── include/                # Public API and utility headers
-│   ├── bridge_delphi.h
+│   ├── offc_delphi.h
 ├── src/                    # C source code
-│   ├── bridge_delphi.c
+│   ├── offc_delphi.c
 ├── wrappers/               # Language wrappers (Delphi)
-│   └── Bridge.pas
+│   └── OffC.pas
 ├── LICENSE                 # License information (MIT)
 ├── Makefile                # Build script for DLL
 └── README.md               # Project documentation
@@ -54,22 +54,22 @@ To build the library as a DLL:
 
 1. Download and extract the [winlibs.com](https://winlibs.com/) GCC toolchain (ensure it is in your PATH).
 2. Open a Command Prompt or PowerShell window.
-3. Navigate to the project root directory (`bridge_delphi`).
+3. Navigate to the project root directory (`offc_delphi`).
 4. Run:
 
    ```sh
    mingw32-make
    ```
 
-This will generate `bridge_delphi.dll` in the project directory.
+This will generate `offc_delphi.dll` in the project directory.
 
 ---
 
 ## Using the Library in Delphi
 
 ### 1. Setup
-- Place `bridge_delphi.dll` in the directory where the executable is created upon compiling your Delphi project, or ensure it is in a directory included in your system's PATH.
+- Place `offc_delphi.dll` in the directory where the executable is created upon compiling your Delphi project, or ensure it is in a directory included in your system's PATH.
 
 ### 2. Using the Wrapper in a Delphi Project
-- Add the path to `Bridge.pas` in the "Search Path" under Project Options in your Delphi project, or copy the file into your Delphi project.
+- Add the path to `OffC.pas` in the "Search Path" under Project Options in your Delphi project, or copy the file into your Delphi project.
 - Use the functions declared in the wrapper to perform matrix operations.

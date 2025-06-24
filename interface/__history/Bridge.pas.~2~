@@ -1,0 +1,16 @@
+unit Bridge;
+
+interface
+
+uses
+  System.SysUtils;
+
+const
+  DLLNAME = 'bridge_delphi.dll';
+
+procedure ijk_seq(A, B, C: PDouble; M, K, N: Integer); cdecl; external DLLNAME name 'ijk_seq';
+//procedure mm_strassen(A, B, C: PDouble; M, K, N: Integer); cdecl; external DLLNAME name 'mm_strassen';
+
+implementation
+
+end.
