@@ -1,11 +1,9 @@
 # offc_delphi - High Performance Matrix Operations Library
 
-[!Platform: Windows](https://www.microsoft.com/en-us/windows/windows-11)
-[!GCC](https://winlibs.com/)
+[![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2011-blue)](https://www.microsoft.com/en-us/windows/windows-11)
+[![GCC](https://img.shields.io/badge/GCC-15.1.0-brightgreen)](https://winlibs.com/)
 
 `offc_delphi` is a dynamic library written in C, providing efficient matrix multiplication operations for Delphi applications. It implements various advanced algorithms including sequential, OpenMP parallelized, SIMD vectorized (AVX2/FMA), and Strassen's matrix multiplication. This module is designed for High-Performance Computing (HPC) tasks requiring intensive algebraic computations.
-
----
 
 ## Features
 
@@ -15,8 +13,6 @@
 - **High-Performance Computing**: Enables vectorized/optimized computations for improved performance.
 - **Cross-Language Compatibility**: Distributed as a DLL, accessible from various programming environments.
 - **Modern Toolchain Support**: Built and tested with the latest GCC toolchain for Windows 11.
-
----
 
 ## Requirements & Development Environment
 
@@ -28,8 +24,6 @@ The library is developed, tested, and intended to be used in the following envir
 - **Dependencies**: OpenMP (included in GCC) for multi-threading.
 - **Build System**: `mingw32-make`
 - **Delphi Integration**: RAD Studio (Delphi 12.1 Community Edition)
-
----
 
 ## Project Structure
 
@@ -48,8 +42,6 @@ offc_delphi/
 └── README.md               # Project documentation
 ```
 
----
-
 ## Compilation Instructions
 
 To build the library as a DLL:
@@ -64,8 +56,6 @@ To build the library as a DLL:
    ```
 
 This will generate `offc_delphi.dll` in the `build/` directory.
-
----
 
 ## Using the Library in Delphi
 
@@ -84,13 +74,9 @@ uses OffC;
 mm_ikj_seq(@MatrixA[0], @MatrixB[0], @MatrixC[0], Rows, K, Cols);
 ```
 
----
-
 ## Academic Citation
 
 If you use this software in your research, please cite it using the metadata provided in the `CITATION.cff` file located in the root of this repository.
-
----
 
 ## License
 
