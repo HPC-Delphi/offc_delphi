@@ -1,19 +1,20 @@
 # offc_delphi - High Performance Matrix Operations Library
 
-[![Platform: Windows](https://img.shields.io/badge/Platform-Windows%2011-blue)](https://www.microsoft.com/en-us/windows/windows-11)
-[![GCC](https://img.shields.io/badge/GCC-15.1.0-brightgreen)](https://winlibs.com/)
+[!Platform: Windows](https://www.microsoft.com/en-us/windows/windows-11)
+[!GCC](https://winlibs.com/)
 
-`offc_delphi` is a high-performance dynamic library written in C, providing efficient matrix operations. Designed for seamless integration with Delphi applications, it enables advanced matrix computations, including sequential implementations of Gustavson algorithms. The library is distributed as a DLL for easy cross-language usage.
+`offc_delphi` is a dynamic library written in C, providing efficient matrix multiplication operations for Delphi applications. It implements various advanced algorithms including sequential, OpenMP parallelized, SIMD vectorized (AVX2/FMA), and Strassen's matrix multiplication. This module is designed for High-Performance Computing (HPC) tasks requiring intensive algebraic computations.
 
 ---
 
 ## Features
 
-- **Matrix Multiplication**: Optimized matrix multiplication for high performance.
-- **Delphi Integration**: Includes a Delphi wrapper for straightforward use in Delphi projects.
-- **Advanced Algorithms**: Implements Gustavson algorithm (sequential variant).
+- **Matrix Multiplication Algorithms**: Implements standard sequential (IKJ), OpenMP parallelized, and Strassen's recursive multiplication.
+- **SIMD Vectorization**: Utilizes AVX and AVX2 intrinsics along with loop unrolling to maximize CPU throughput in vector operations.
+- **Delphi Wrapper**: Includes a Delphi wrapper for seamless integration.
+- **High-Performance Computing**: Enables vectorized/optimized computations for improved performance.
 - **Cross-Language Compatibility**: Distributed as a DLL, accessible from various programming environments.
-- **Modern Toolchain Support**: Built and tested with the latest GCC and MinGW-w64 toolchains for Windows 11.
+- **Modern Toolchain Support**: Built and tested with the latest GCC toolchain for Windows 11.
 
 ---
 
@@ -23,7 +24,8 @@ The library is developed, tested, and intended to be used in the following envir
 
 - **Operating System**: Windows 11 (64-bit)
 - **Compiler**: GCC 15.1.0
-- **Toolchain**: MinGW-w64 12.0.0 UCRT (release 1) from [winlibs.com](https://winlibs.com/)
+- **Toolchain**: MinGW-w64 12.0.0 UCRT (release 1) from winlibs.com
+- **Dependencies**: OpenMP (included in GCC) for multi-threading.
 - **Build System**: `mingw32-make`
 - **Delphi Integration**: RAD Studio (Delphi 12.1 Community Edition)
 
@@ -31,17 +33,17 @@ The library is developed, tested, and intended to be used in the following envir
 
 ## Project Structure
 
-```
+```text
 offc_delphi/
 │
 ├── build/                  # Compiled binaries and intermediate files
-├── include/                # Public API and utility headers
-│   ├── offc_delphi.h
+├── include/                # Public API headers (C)
+│   └── offc_delphi.h
 ├── src/                    # C source code
-│   ├── offc_delphi.c
-├── wrappers/               # Language wrappers (Delphi)
+│   └── offc_delphi.c
+├── wrappers/               # Delphi language wrapper
 │   └── OffC.pas
-├── LICENSE                 # License information (MIT)
+├── LICENSE                 # License information
 ├── Makefile                # Build script for DLL
 └── README.md               # Project documentation
 ```
@@ -52,7 +54,7 @@ offc_delphi/
 
 To build the library as a DLL:
 
-1. Download and extract the [winlibs.com](https://winlibs.com/) GCC toolchain (ensure it is in your PATH).
+1. Ensure the GCC toolchain with OpenMP support is available in your system's PATH.
 2. Open a Command Prompt or PowerShell window.
 3. Navigate to the project root directory (`offc_delphi`).
 4. Run:
@@ -61,7 +63,7 @@ To build the library as a DLL:
    mingw32-make
    ```
 
-This will generate `offc_delphi.dll` in the project directory.
+This will generate `offc_delphi.dll` in the `build/` directory.
 
 ---
 
@@ -71,5 +73,25 @@ This will generate `offc_delphi.dll` in the project directory.
 - Place `offc_delphi.dll` in the directory where the executable is created upon compiling your Delphi project, or ensure it is in a directory included in your system's PATH.
 
 ### 2. Using the Wrapper in a Delphi Project
-- Add the path to `OffC.pas` in the "Search Path" under Project Options in your Delphi project, or copy the file into your Delphi project.
-- Use the functions declared in the wrapper to perform matrix operations.
+- Add the path to `OffC.pas` in the "Search Path" under Project Options in your Delphi project.
+- Use the functions declared in the wrapper to perform operations.
+
+**Example Usage:**
+```pascal
+uses OffC;
+
+// Multiply matrices A and B into C using sequential IKJ algorithm
+mm_ikj_seq(@MatrixA[0], @MatrixB[0], @MatrixC[0], Rows, K, Cols);
+```
+
+---
+
+## Academic Citation
+
+If you use this software in your research, please cite it using the metadata provided in the `CITATION.cff` file located in the root of this repository.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

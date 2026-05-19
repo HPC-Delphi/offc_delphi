@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it using the metadata below."
+authors:
+  - family-names: "Galdo Galián"
+    given-names: "Daniel"
+    affiliation: "Universidad de Murcia"
+title: "offc_delphi - High Performance Matrix Operations Library"
+abstract: "A high-performance dynamic library written in C with Delphi wrappers. It implements optimized matrix multiplication algorithms including Sequential, OpenMP, SIMD (AVX2), and Strassen's method."
+type: software
+version: 1.0.0
+date-released: 2026-05-19
+license: MIT
+repository-code: "https://github.com/HPC-Delphi/offc_delphi"
+keywords:
+  - "matrix-multiplication"
+  - "delphi"
+  - "pascal"
+  - "hpc"
+  - "simd"
+  - "avx2"
+  - "openmp"

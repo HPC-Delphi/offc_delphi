@@ -119,7 +119,6 @@ OFFC_DELPHI_API void mm_ikj_parvec(double *a, double *b, double *c, int m, int k
       __m256d vecSum = _mm256_setzero_pd();
 
       int p = 0;
-
       for (; p <= k - 4; p += 4)
       {
         __m256d vecA = _mm256_loadu_pd(&a[i * k + p]);
