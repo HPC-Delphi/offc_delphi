@@ -99,7 +99,7 @@ Once your toolchain environment is properly set up, building the library is simp
    mingw32-make
    ```
 
-This will generate `offc_delphi.dll` in the `build/` directory.
+This will generate `offc_delphi.dll` in the `build\` directory.
 
 ## Using the Library in Delphi
 
