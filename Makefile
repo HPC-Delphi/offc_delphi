@@ -6,16 +6,17 @@ OBJ_DIR   := build
 INC_DIR   := include
 
 TARGET    := $(OBJ_DIR)\offc_delphi.dll
-SRC   := $(SRC_DIR)\offc_delphi.c
-OBJ   := $(OBJ_DIR)\offc_delphi.o
-HEADERS      := $(INC_DIR)\offc_delphi.h
+SRC       := $(SRC_DIR)\offc_delphi.c
+OBJ       := $(OBJ_DIR)\offc_delphi.o
+INC       := $(INC_DIR)\offc_delphi.h
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
+	del /q $(OBJ)
 
-$(OBJ): $(SRC) $(HEADERS) | $(OBJ_DIR)
+$(OBJ): $(SRC) $(INC) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $(SRC) -o $(OBJ)
 
 $(OBJ_DIR):

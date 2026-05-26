@@ -19,7 +19,7 @@ The library is developed, tested, and intended to be used in the following envir
 
 - **Operating System**: Windows 11 (64-bit)
 - **Compiler**: GCC 15.1.0
-- **Toolchain**: MinGW-w64 12.0.0 UCRT (release 1) from [winlibs.com](winlibs.com)
+- **Toolchain**: MinGW-w64 12.0.0 UCRT (release 1) from [winlibs.com](https://winlibs.com/)
 - **Dependencies**: OpenMP for multi-threading.
 - **Build System**: `mingw32-make`
 - **Delphi Integration**: RAD Studio (Delphi 12.1 Community Edition)
@@ -28,7 +28,7 @@ The library is developed, tested, and intended to be used in the following envir
 To compile this library, you must install the specific GCC toolchain that supports OpenMP multi-threading. Follow these steps carefully:
 
 **1. Download the Correct Compiler Version**
-* Navigate to [winlibs.com](winlibs.com).
+* Navigate to [winlibs.com](https://winlibs.com/).
 
 * Locate the block titled: **"GCC 15.1.0 (with POSIX threads) + MinGW-w64 12.0.0 (UCRT) - release 1"**.
 
@@ -36,7 +36,7 @@ To compile this library, you must install the specific GCC toolchain that suppor
 
 * Click on **7-Zip archive** (recommended for smaller download size) or **Zip archive** to download the package.
 
-   > ⚠️ **Crucial Note:** It is strictly required to choose the **POSIX threads** variant because GCC's OpenMP implementation (`libgomp`) relies natively on the POSIX threading standard (`pthread`) for stable multi-threaded execution.
+   > **Note:** It is strictly required to choose the **POSIX threads** variant because GCC's OpenMP implementation (`libgomp`) relies natively on the POSIX threading standard (`pthread`) for stable multi-threaded execution.
 
 **2. Extraction and Directory Setup**
 * Extract the downloaded archive.
@@ -75,10 +75,10 @@ offc_delphi/
 ├── build/                  # Compiled binaries and intermediate files
 ├── include/                # Public API headers (C)
 │   └── offc_delphi.h
+├── interface/              # Delphi wrapper
+│   └── OffC.pas
 ├── src/                    # C source code
 │   └── offc_delphi.c
-├── wrappers/               # Delphi wrapper
-│   └── OffC.pas
 ├── LICENSE                 # License information
 ├── Makefile                # Build script for DLL
 └── README.md               # Project documentation
@@ -129,7 +129,7 @@ To use the library functions natively inside your Delphi Pascal source code, fol
 
 4. In the main area, click the **Search Path** field.
 
-5. Click on the ellipsis `...` button and add the absolute path to the `wrappers/` folder inside your repository (e.g.: `C:\Projects\offc_delphi\wrappers`).
+5. Click on the ellipsis `...` button and add the absolute path to the `interface\` folder inside your repository (e.g.: `C:\Projects\offc_delphi\interface`).
 
 6. Click **OK** and then **Save**.
 
