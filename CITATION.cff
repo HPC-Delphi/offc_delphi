@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 title: "offc_delphi - High Performance Matrix Operations Library"
 abstract: "A dynamic library written in C that provides high-performance matrix multiplication operations for Delphi applications, including sequential, OpenMP parallel, SIMD-vectorized (AVX2/FMA), and Strassen-based implementations."
 authors:
-  - family-names: Galdo Galián
+  - family-names: Galdo
     given-names: Daniel
     orcid: "https://orcid.org/0009-0000-4952-1649"
 version: 1.0.0
